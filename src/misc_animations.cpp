@@ -1,37 +1,24 @@
 #include <FastLED.h>
 #include "leds.h"
 static uint8_t gHue = 0; 
+
 #define FRAMES_PER_SECOND  120
 
-bool animateSlaveBreath_loop() {
-  const int bpm = 50;
-  CRGB color = CHSV(120, 193, beatsin8(bpm, 0, 255));
+void breath_loop() {
+  const int bpm = 40;
+  CRGB color = CHSV(beatsin8(bpm/4, 0, 255), 193, beatsin8(bpm, 0, 255));
   for (auto i = 0; i < FastLED.size(); i++) {
     leds[i] = color;
   }
 
   FastLED.show();
-  return true;
+  FastLED.delay(1000/FRAMES_PER_SECOND); 
 }
 
-void addGlitter( fract8 chanceOfGlitter) 
-{
-  if( random8() < chanceOfGlitter) {
-    leds[ random16(NUM_LEDS) ] += CRGB::White;
-  }
-}
-
-void rainbow() 
+void rainbow_loop() 
 {
   EVERY_N_MILLISECONDS( 20 ) { gHue++; } // slowly cycle the "base color" through the rainbow
-  // FastLED's built-in rainbow generator
   fill_rainbow( leds, NUM_LEDS, gHue, 7);
-}
-
-void rainbowWithGlitter() 
-{
-  // built-in FastLED rainbow, plus some random sparkly glitter
-  rainbow();
   FastLED.show();  
   FastLED.delay(1000/FRAMES_PER_SECOND); 
 }

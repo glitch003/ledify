@@ -7,25 +7,6 @@
 
 CRGB leds[NUM_LEDS];
 
-void setup() {
-  #ifndef PROTRINKET5
-  #endif
-  FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
-  FastLED.setBrightness( BRIGHTNESS );
-}
-
-
-void fadeToBlack() {
-  for (int i = 0; i < 30; i++) {
-   for(int j = 0; j < NUM_LEDS; j++) {
-      leds[j].fadeToBlackBy(32);
-   }
-    FastLED.show();
-    FastLED.delay(20);
-  }
-
-}
-
 typedef void (*animation_t)();
 
 struct AnimationEntry {
@@ -48,7 +29,7 @@ AnimationEntry animations[] = {
     DEFAULT_DURATION,
   },
   {
-    rainbowWithGlitter,
+    rainbow_loop,
     DEFAULT_DURATION,
   },
 };
@@ -56,6 +37,26 @@ AnimationEntry animations[] = {
 const int ANIMATION_COUNT  = sizeof(animations) / sizeof(animations[0]);
 static_assert(ANIMATION_COUNT > 1, "should have more than one animation!");
 static_assert(ANIMATION_COUNT < 100, "Something might be wrong here");
+
+void setup() {
+  #ifndef PROTRINKET5
+  #endif
+  FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+  FastLED.setBrightness( BRIGHTNESS );
+}
+
+
+void fadeToBlack() {
+  for (int i = 0; i < 30; i++) {
+   for(int j = 0; j < NUM_LEDS; j++) {
+      leds[j].fadeToBlackBy(32);
+   }
+    FastLED.show();
+    FastLED.delay(20);
+  }
+
+}
+
 
 void loop()
 {
