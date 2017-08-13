@@ -3,6 +3,8 @@
 #include "leds.h"
 #include "cylon.h"
 #include "misc_animations.h"
+#include <assert.h>
+
 CRGB leds[NUM_LEDS];
 
 void setup() {
@@ -31,27 +33,29 @@ struct AnimationEntry {
  uint32_t duration;
 };
 
+const long DEFAULT_DURATION = 1000L * 120L;
 AnimationEntry animations[] = {
-  // {
-  //   rainbowWithGlitter,
-  //   1000L * 120L,
-  // },
   {
     confetti_loop,
-    1000L * 120L,
+    DEFAULT_DURATION,
   },
   {
     Cylon_loop,
-    1000L * 120L
+    DEFAULT_DURATION
   },
   {
     juggle,
-    1000L * 60L * 5L,
+    DEFAULT_DURATION,
+  },
+  {
+    rainbowWithGlitter,
+    DEFAULT_DURATION,
   },
 };
 
-#define ANIMATION_COUNT 3
-// sizeof(animations) / sizeof(AnimationEntry);
+const int ANIMATION_COUNT  = sizeof(animations) / sizeof(animations[0]);
+static_assert(ANIMATION_COUNT > 1, "should have more than one animation!");
+static_assert(ANIMATION_COUNT < 100, "Something might be wrong here");
 
 void loop()
 {
